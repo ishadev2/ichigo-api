@@ -1,6 +1,6 @@
 <?php
 
-use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,24 +14,5 @@ use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 'Welcome to Laravel';
 });
-
-WebSocketsRouter::webSocket('/chat-ws', \App\Http\WS\ChatWebSocketHandler::class);
-
-Route::get('storage/{filename?}', function ($filename)
-{
-    $path = storage_path($filename);
-
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    $response = Response::make($file, 200);
-    $response->header("Content-Type", $type);
-
-    return $response;
-})->where('filename', '(.*)');
